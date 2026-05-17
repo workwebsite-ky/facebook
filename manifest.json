@@ -1,0 +1,77 @@
+{
+  "manifest_version": 3,
+  "name": "LeadLoom — Facebook Lead CRM",
+  "short_name": "LeadLoom",
+  "version": "0.1.0",
+  "description": "ToS-safe lead capture, AI message composer, and CRM for Meta Lead Ads and manually saved Facebook leads.",
+  "author": "Your Company",
+  "minimum_chrome_version": "114",
+
+  "action": {
+    "default_title": "LeadLoom",
+    "default_popup": "src/popup/index.html",
+    "default_icon": {
+      "16": "public/icons/icon16.png",
+      "32": "public/icons/icon32.png",
+      "48": "public/icons/icon48.png",
+      "128": "public/icons/icon128.png"
+    }
+  },
+
+  "icons": {
+    "16": "public/icons/icon16.png",
+    "32": "public/icons/icon32.png",
+    "48": "public/icons/icon48.png",
+    "128": "public/icons/icon128.png"
+  },
+
+  "background": {
+    "service_worker": "src/background/service-worker.js",
+    "type": "module"
+  },
+
+  "content_scripts": [
+    {
+      "matches": [
+        "https://www.facebook.com/*",
+        "https://m.facebook.com/*",
+        "https://web.facebook.com/*"
+      ],
+      "js": ["src/content/facebook-content.js"],
+      "css": ["src/content/facebook-content.css"],
+      "run_at": "document_idle"
+    }
+  ],
+
+  "permissions": [
+    "storage",
+    "alarms",
+    "notifications",
+    "tabs",
+    "scripting",
+    "contextMenus",
+    "identity"
+  ],
+
+  "host_permissions": [
+    "https://graph.facebook.com/*",
+    "https://api.anthropic.com/*",
+    "https://api.openai.com/*"
+  ],
+
+  "options_page": "src/dashboard/index.html",
+
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "src/dashboard/index.html",
+        "public/icons/*"
+      ],
+      "matches": ["https://www.facebook.com/*", "https://web.facebook.com/*"]
+    }
+  ],
+
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'; connect-src 'self' https://graph.facebook.com https://api.anthropic.com https://api.openai.com;"
+  }
+}
